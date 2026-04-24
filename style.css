@@ -1,1 +1,91 @@
+/* ለአጠቃላይ ገጹ የሚሆን ስታይል */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#main-container {
+    width: 100%;
+    max-width: 450px; /* ለስልክ ተስማሚ መጠን */
+}
+
+/* ካርዶች (Login እና Dashboard) */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.title {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+/* የመጻፊያ ሳጥኖች (Input Fields) */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    box-sizing: border-box; /* padding ውስጡ እንዲሆን */
+    font-size: 16px;
+}
+
+/* ዋና አዝራር (Login Button) */
+.primary-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.primary-btn:hover {
+    background-color: #2980b9;
+}
+
+/* ዳሽቦርድ ራስጌ (Header) */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #2c3e50;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/* መውጫ አዝራር (Logout) */
+.logout-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
