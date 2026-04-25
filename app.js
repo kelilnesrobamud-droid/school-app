@@ -1,4 +1,3 @@
-
 import { auth } from "./firebase-config.js";
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
@@ -26,13 +25,21 @@ if (loginBtn) {
 
 if (logoutBtn) {
     logoutBtn.onclick = () => {
-        signOut(auth).then(() => location.reload());
+        signOut(auth).then(() => {
+            location.reload();
+        });
     };
 }
 
 onAuthStateChanged(auth, (user) => {
+    const loginSection = document.getElementById("login-section");
+    const dashboardSection = document.getElementById("dashboard-section");
+    
     if (user) {
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("dashboard-section").style.display = "block";
+        loginSection.style.display = "none";
+        dashboardSection.style.display = "block";
+    } else {
+        loginSection.style.display = "block";
+        dashboardSection.style.display = "none";
     }
 });
