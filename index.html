@@ -1,30 +1,110 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የአል አቅሷ መድረሳ አስተዳደር</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-import { auth } from "./firebase-config.js";
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    <div id="main-container">
+        <div id="login-section" class="card">
+            <h2 class="title">እንኳን ደህና መጡ</h2>
+            <p class="subtitle">የአል አቅሷ መድረሳ የተማሪዎች መቆጣጠሪያ</p>
+            
+            <div class="input-group">
+                <select id="user-role" class="input-field">
+                    <option value="admin">አስተዳዳሪ (Admin)</option>
+                    <option value="teacher">አስተማሪ (Teacher)</option>
+                    <option value="parent">ወላጅ (Parent)</option>
+                </select>
+                <input type="email" id="email" class="input-field" placeholder="ኢሜይል ያስገቡ">
+                <input type="password" id="password" class="input-field" placeholder="ሚስጥራዊ ቁጥር">
+            </div>
+            
+            <button id="login-btn" class="primary-btn">ግባ</button>
+        </div>
 
-const loginBtn = document.getElementById("login-btn");
-const logoutBtn = document.getElementById("logout-btn");
+        <div id="dashboard-section" style="display:none;">
+            <div class="header">
+                <h2>ዳሽቦርድ</h2>
+                <button id="logout-btn" class="logout-btn">ውጣ</button>
+            </div>
+            <div class="card">
+                <h3>እንኳን በደህና መጡ!</h3>
+                <p id="user-info"></p>
+                <hr>
+                <div class="menu-grid">
+                    <p>እዚህ ጋር የተማሪዎች ዝርዝር እና ክፍያ ይታያል...</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-if (loginBtn) {
-    loginBtn.onclick = async () => {
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            alert("ተሳክቷል! እንኳን ደህና መጡ።");
-        } catch (error) {
-            alert("ስህተት: " + error.message);
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // 1. Firebase መረጃ (ቅድም የላክኸው ትክክለኛው)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfvuRAupj4_bDeaSJRMtpz_lohdd1XHM",
+            authDomain: "school-app-945a1.firebaseapp.com",
+            projectId: "school-app-945a1",
+            storageBucket: "school-app-945a1.firebasestorage.app",
+            messagingSenderId: "1074529168380",
+            appId: "1:1074529168380:web:eb23f0ee65dd7770bca079"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // 2. ቁልፎቹን መያዝ
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+
+        // 3. የመግቢያ ስራ
+        if (loginBtn) {
+            loginBtn.onclick = async () => {
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (!email || !password) {
+                    alert("እባክዎ ኢሜይል እና ፓስወርድ ያስገቡ!");
+                    return;
+                }
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    alert("በተሳካ ሁኔታ ገብተዋል!");
+                } catch (error) {
+                    alert("ስህተት፡ " + error.message);
+                }
+            };
         }
-    };
-}
 
-if (logoutBtn) {
-    logoutBtn.onclick = () => { signOut(auth).then(() => location.reload()); };
-}
+        // 4. የመውጫ ስራ
+        if (logoutBtn) {
+            logoutBtn.onclick = () => {
+                signOut(auth).then(() => {
+                    location.reload();
+                });
+            };
+        }
 
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("dashboard-section").style.display = "block";
-    }
-});
+        // 5. ሰውዬው መግባቱን ቼክ ማድረግ
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginSection.style.display = "none";
+                dashboardSection.style.display = "block";
+                document.getElementById('user-info').innerText = "Logged in as: " + user.email;
+            } else {
+                loginSection.style.display = "block";
+                dashboardSection.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
