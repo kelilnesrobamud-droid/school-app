@@ -1,1 +1,92 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የተማሪዎች መቆጣጠሪያ ሲስተም</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="main-container">
+        <div id="login-section" class="card">
+            <h2 class="title">እንኳን ደህና መጡ</h2>
+            <p class="subtitle">የተማሪዎች መቆጣጠሪያ ሲስተም</p>
+            
+            <div class="input-group">
+                <input type="email" id="email" class="input-field" placeholder="ኢሜይል ያስገቡ">
+                <input type="password" id="password" class="input-field" placeholder="ፓስወርድ ያስገቡ">
+            </div>
+            
+            <button id="login-btn" class="primary-btn">ግባ</button>
+        </div>
+
+        <div id="dashboard-section" style="display:none;">
+            <div class="header">
+                <h2>ዳሽቦርድ</h2>
+                <button id="logout-btn" class="logout-btn">ውጣ</button>
+            </div>
+            <div class="card">
+                <h3>እንኳን በደህና መጡ!</h3>
+                <p id="user-info"></p>
+                <hr>
+                <p>አፑ አሁን ከ Firebase ጋር በትክክል ተገናኝቷል።</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // በፎቶው ላይ ያረጋገጥነው ትክክለኛው ኮንፊግ
+        const firebaseConfig = {
+            apiKey: "AIzaSyBYfvuRAupj4_bDeaSJRMtpz_lohdd1XHM",
+            authDomain: "school-app-945a1.firebaseapp.com",
+            projectId: "school-app-945a1",
+            storageBucket: "school-app-945a1.firebasestorage.app",
+            messagingSenderId: "1074529168380",
+            appId: "1:1074529168380:web:eb23f0ee65dd7770bca079"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        if (loginBtn) {
+            loginBtn.onclick = async () => {
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+
+                if (!email || !password) {
+                    alert("እባክዎ ኢሜይል እና ፓስወርድ ያስገቡ!");
+                    return;
+                }
+
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } catch (error) {
+                    alert("ስህተት፡ " + error.message);
+                }
+            };
+        }
+
+        if (logoutBtn) {
+            logoutBtn.onclick = () => {
+                signOut(auth).then(() => { location.reload(); });
+            };
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-section').style.display = "none";
+                document.getElementById('dashboard-section').style.display = "block";
+                document.getElementById('user-info').innerText = "ገብተዋል፦ " + user.email;
+            }
+        });
+    </script>
+</body>
+</html>
 
